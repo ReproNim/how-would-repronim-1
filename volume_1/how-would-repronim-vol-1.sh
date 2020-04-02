@@ -1,5 +1,11 @@
 #!/bin/bash
 
+if [ ! -e /var/run/docker.sock ]
+then
+    echo "/var/run/docker.sock not found in container" >&2
+    exit 1
+fi
+
 run_dir_mount=$( docker inspect $( hostname ) \
                  | jq -r '.[0].HostConfig.Binds | .[]' \
                  | grep -v docker.sock )
